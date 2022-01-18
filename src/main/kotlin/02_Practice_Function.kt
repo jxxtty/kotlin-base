@@ -3,7 +3,7 @@ fun sum(a: Int, b: Int): Int { // int sum(int a, int b){return a+b;}
     return a+b;
 }
 
-// 리턴타입을 생략한 채 작성해도 된다.
+// 리턴타입을 생략한 채 작성해도 된다. -> 단일 표현식 함수
 fun sum2(a: Int, b: Int) = a+b
 
 // 리턴타입이 없을때는 Unit을 쓰는데(java의 void같은 역할을 하는것같다)
