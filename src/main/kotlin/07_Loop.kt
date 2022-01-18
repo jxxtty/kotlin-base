@@ -46,4 +46,19 @@ fun main() {
     do {
         print(a++) // 01234
     }while(a<5)
+    println()
+
+
+    returnFunc()
+}
+
+
+fun returnFunc(){
+    println("start!")
+    loop@for(i in 1..10){
+        for (j in 1..10){
+            if(i == 1 && j == 3) break@loop // label이 달린 반복문을 기준으로 종료
+            println("i = $i, j = $j")
+        }
+    }
 }
