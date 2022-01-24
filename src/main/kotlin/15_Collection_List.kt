@@ -12,6 +12,7 @@ fun main() {
     val a = listOf("사과", "딸기", "배")
     println(a[1]) // 배열과 사용방법이 똑같다
 
+
     for(fruit in a) { // 리스트 a에서 요소를 하나씩 꺼내 fruit에 할당해줌
         print("${fruit} ")
     }
