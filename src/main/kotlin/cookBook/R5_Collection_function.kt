@@ -1,7 +1,9 @@
 package cookBook
 
+import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.time.seconds
 
 fun main() {
     // [R5.1]
@@ -116,6 +118,72 @@ fun main() {
     val testList2 = listOf("jxxtty", "github.com/jxxtty", "jxxtty.tistory.com")
     val (nickname, _ , blog) = testList2
     println("nickname : $nickname, blog : $blog") // nickname : jxxtty, blog : jxxtty.tistory.com
+
+    // R5.9
+    val golfers = listOf(
+        Golfer(70, "Jack", "Nicklaus"),
+        Golfer(68, "Tom", "Watson"),
+        Golfer(68, "Bubba", "Watson"),
+        Golfer(70, "Tiger", "Woods"),
+        Golfer(68, "Ty", "Webb")
+    )
+
+    val sortedGolfer = golfers.sortedWith(compareBy( { it.score }, { it.last }, { it.first })) // 점수정렬 - 점수가 같다면 last로 정렬 - last까지 깥다면 first로 정렬
+    sortedGolfer.forEach{ println(it) }
+    println("----------------------------------")
+    val comparator = compareBy<Golfer>(Golfer::score).thenBy(Golfer::last).thenBy(Golfer::first)
+    golfers.sortedWith(comparator).forEach(::println)
+
+    val list2 = mutableListOf(1, 2, 7, 4, 3, 5, 2, 3)
+    val sorted = list2.sorted()
+    println(list2) // [1, 2, 7, 4, 3, 5, 2, 3] -> 원본은 변하지 않는다.
+    println(sorted) // [1, 2, 2, 3, 3, 4, 5, 7]
+
+    list2.sort()
+    println(list2) // [1, 2, 2, 3, 3, 4, 5, 7] -> 원본이 정렬된다.
+
+    list2.addAll(listOf(6, 4, 1, 2))
+    list2.sortByDescending { it }
+    println(list2) // [7, 6, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1]
+
+    list2.addAll(listOf(1, 2, 3, 4))
+    val sortedDesc = list2.sortedByDescending { it }
+    println(sortedDesc) // [7, 6, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1]
+    println(list2) // [7, 6, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 2, 3, 4] -> 원본 유지
+
+    val list3 = mutableListOf(1 to "a", 2 to "b", 7 to "c", 3 to "d", 5 to "c", 3 to "e")
+    list3.sortBy { it.second }
+    println(list3)
+
+
+    // R5.11
+    val complexList = listOf("a", LocalDate.now(), 3, 1, 4, "b")
+    val strings = complexList.filter { it is String }
+    println(strings) // [a, b]
+
+    // for(s in strings) println(s.length) // 컴파일 되지 않는다.
+
+    var all = complexList.filterIsInstance<Any>()
+    println(all) // [a, 2022-01-27, 3, 1, 4, b]
+
+    var strings2 = complexList.filterIsInstance<String>()
+    println(strings2) // [a, b]
+    for(s in strings2) println(s.length) // 1 1
+
+    var ints = complexList.filterIsInstance<Int>()
+    println(ints) // [3, 1, 4]
+
+    var dates = complexList.filterIsInstance(LocalDate::class.java)
+    println(dates) // [2022-01-27]
+
+
+    var all2 = complexList.filterIsInstanceTo(mutableListOf<Any>())
+    var strings3 = complexList.filterIsInstanceTo(mutableListOf<String>())
+    var ints2 = complexList.filterIsInstanceTo(mutableListOf<Int>())
+    var dates2 = complexList.filterIsInstanceTo(mutableListOf<LocalDate>())
+
+
+
 }
 
 // R5.5
@@ -124,3 +192,7 @@ data class Product(val name: String, val price: Double, val onSale: Boolean = fa
 fun namesOfProductsOnSale(products: List<Product>) = products.filter { it.onSale }.map { it.name }.joinToString(separator = ", ")
 fun namesOfProductsOnSaleIfEmptyCollection(products: List<Product>) = products.filter { it.onSale }.map { it.name }.ifEmpty { listOf("none") }.joinToString(separator = ", ")
 fun namesOfProductsOnSaleIfEmptyString(products: List<Product>) = products.filter { it.onSale }.map { it.name }.joinToString(separator = ", ").ifEmpty { "none" }
+
+
+// R5.9
+data class Golfer(val score: Int, val first: String, val last:String)
