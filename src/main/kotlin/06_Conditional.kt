@@ -54,6 +54,13 @@ fun systemInfoRefac(): String =
     }
 
 
+fun testWhenWithoutArgument(str: String): String {
+    return when {
+        str == "hello" -> "hi hello"
+        else -> "else else"
+    }
+}
+
 fun main() {
     println(whatToDo("Sunday")) // Relax
     println(whatToDo("Wednesday")) // Work Hard
@@ -70,4 +77,7 @@ fun main() {
 
     println(systemInfo())
     println(systemInfoRefac())
+
+    println("withoutArgument : ${testWhenWithoutArgument("hello")}") // withoutArgument : hi hello
+    println("withoutArgument : ${testWhenWithoutArgument("h")}") // withoutArgument : else else
 }
